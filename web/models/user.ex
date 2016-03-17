@@ -6,11 +6,12 @@ defmodule PhoenixTrello.User do
     field :last_name, :string
     field :email, :string
     field :encrypted_password, :string
+    field :password, :string, virtual: true
 
     timestamps
   end
 
-  @required_fields ~w(first_name last_name email encrypted_password)
+  @required_fields ~w(first_name last_name email password encrypted_password)
   @optional_fields ~w()
 
   @doc """
@@ -22,5 +23,9 @@ defmodule PhoenixTrello.User do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> validate_format(:email, ~r/@/)
+    |> validate_length(:password, min: 5)
+    |> validate_confirmation(:password, message: "Password does not match")
+    |> unique_constraint(:email, message: "Email already taken")
   end
 end
