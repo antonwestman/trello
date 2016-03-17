@@ -6,12 +6,16 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
+
 config :phoenix_trello, PhoenixTrello.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
+  cache_static_lookup: false,
   check_origin: false,
-  watchers: []
+  watchers: [
+    node: ["node_modules/webpack/bin/webpack.js", "--watch", "--color"]
+  ]
 
 # Watch static and templates for browser reloading.
 config :phoenix_trello, PhoenixTrello.Endpoint,
